@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import RenderPage from "./pages";
+import Header from "./components/Header";
+import "./App.css";
 
-function App() {
+interface IProps {
+  loading?: boolean;
+}
+
+const App: React.FC<IProps> = ({ loading, ...props }) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="app-main">
+      <header className="app-header">
+        <Header />
       </header>
+      <div className="app-sub">
+        <RenderPage loading={loading} {...props} />
+        <div id="sub-app-viewport"></div>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
