@@ -6,6 +6,8 @@ import {
   start,
   runAfterFirstMounted,
   addGlobalUncaughtErrorHandler,
+  initGlobalState,
+  MicroAppStateActions,
 } from "qiankun";
 
 import "./index.css";
@@ -40,9 +42,7 @@ const appStart = () => {
     activeRule: string;
     container: string;
     loader: (loading: boolean) => void;
-    props: {
-      routerBase: string; // 给子应用下发的基础路由
-    };
+    props: {};
   }
 
   const apps: AppParams[] = [
@@ -53,6 +53,7 @@ const appStart = () => {
       container: "#sub-app-viewport",
       loader,
       props: {
+        info: "来了老弟",
         routerBase: "/dnhyxc/react", // 给子应用下发的基础路由
       },
     },
@@ -124,7 +125,19 @@ const appStart = () => {
       render(failed);
     }
   });
+
+  const initState = {
+    AppName: "micro-react-main",
+  };
+  initGlobalState(initState);
 };
+
+const actions: MicroAppStateActions = initGlobalState({});
+(window as any).__MAIN_GLOBALSTATE_ACTIONS__ = actions;
+actions.onGlobalStateChange((state, prev) => {
+  // state: 变更后的状态; prev 变更前的状态
+  console.log("[onGlobalStateChange - master]:", state, prev);
+});
 
 // 设置路由拦截
 const routeIntercept = () => {
