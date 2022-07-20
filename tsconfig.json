@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "../../handleMicro", "../../handleMicro/umdModel.js", "../../handleMicro/umdModel.js"  ]
 }

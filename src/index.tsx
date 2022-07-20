@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+// import { registerMicroApps, start } from "./handleMicro";
+
 import {
   registerMicroApps,
   start,
@@ -10,9 +12,9 @@ import {
   MicroAppStateActions,
 } from "qiankun";
 
-import "./index.css";
 import { login, notfound, failed } from "./pages/config";
 import App from "./App";
+import "./index.css";
 
 interface IProps {
   loading?: boolean;
@@ -70,32 +72,14 @@ const appStart = () => {
   ];
 
   // 注册子应用
-  registerMicroApps(apps, {
-    beforeLoad: (app): any => {
-      console.log("before load app.name=====>>>>>", app.name);
-    },
-    beforeMount: [
-      (app): any => {
-        console.log("[LifeCycle] before mount %c%s", "color: green;", app.name);
-      },
-    ],
-    afterMount: [
-      (app): any => {
-        console.log("[LifeCycle] after mount %c%s", "color: green;", app.name);
-      },
-    ],
-    afterUnmount: [
-      (app): any => {
-        console.log(
-          "[LifeCycle] after unmount %c%s",
-          "color: green;",
-          app.name
-        );
-      },
-    ],
-  });
+  registerMicroApps(apps);
 
-  start();
+  start({
+    sandbox: {
+      // strictStyleIsolation: true, // 使用 shadow dom 解决样式冲突，该方式兼容性较差
+      experimentalStyleIsolation: true, // 通过添加选择器范围来解决样式冲突
+    },
+  });
 
   // 微前端启动进入第一个子应用后回调函数
   runAfterFirstMounted(() => {
